@@ -6,13 +6,25 @@ namespace ProjetoXadrez
     {
         static void Main(string[] args)
         {
-            try{
-                Chessboard chess = new Chessboard(8, 8);
-                chess.PlacePiece(new Rook(chess, Color.White), new Posicion(0, 0));
-                chess.PlacePiece(new Rook(chess, Color.White), new Posicion(0, 7));
-                chess.PlacePiece(new King(chess, Color.White), new Posicion(1, 3));
-                chess.PlacePiece(new Rook(chess, Color.Black), new Posicion(2, 4));
-                Screen.PrintChessboard(chess);
+            try
+            {
+                ChessGame game = new ChessGame();
+                while (!game.Finished)
+                {
+                    Console.Clear();
+                    Screen.PrintChessboard(game.Chessboard);
+                    Console.WriteLine();
+
+                    Console.Write("Origin: ");
+                    Posicion origin = Screen.ReadChessPosition().ToPosition();
+
+                    Console.WriteLine();
+                    Console.Write("Destiny: ");
+                    Posicion destiny = Screen.ReadChessPosition().ToPosition();
+
+                    game.MovePiece(origin, destiny);
+                }
+                   
             }
             catch (ChessboardException e)
             {

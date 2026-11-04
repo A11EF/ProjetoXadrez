@@ -14,5 +14,9 @@ namespace tabuleiro
             this.Color = color;
             this.MoveCount = 0;
         }
+        public void IncreaseMoveCount()
+        {
+            MoveCount++;
+        }
     }
 }
