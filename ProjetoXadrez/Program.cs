@@ -5,8 +5,9 @@ namespace ProjetoXadrez
     {
         static void Main(string[] args)
         {
-            Chessboard cbd = new Chessboard(8, 8);
-            Console.WriteLine(cbd);
+            Chessboard chess = new Chessboard(8, 8);
+            Screen.PrintChessboard(chess);
+            Console.WriteLine();
         }
     }
 }

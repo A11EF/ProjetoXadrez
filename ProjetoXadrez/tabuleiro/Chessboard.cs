@@ -13,5 +13,10 @@ namespace tabuleiro
             this.Columns = columns;
             this.Pieces = new ChessPiece[rows, columns];
         }
+
+        public ChessPiece GetPiece(int row, int column)
+        {
+            return Pieces[row, column];
+        }
     }
 }
