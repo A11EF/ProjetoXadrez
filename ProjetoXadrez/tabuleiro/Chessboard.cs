@@ -18,5 +18,10 @@ namespace tabuleiro
         {
             return Pieces[row, column];
         }
+        public void PlacePiece(ChessPiece piece, Posicion position)
+        {
+            Pieces[position.Row, position.Column] = piece;
+            piece.Position = position;
+        }
     }
 }

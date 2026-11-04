@@ -2,17 +2,17 @@ namespace tabuleiro
 {
      class Posicion
     {
-        public int Linha { get; set; }
-        public int Coluna { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
 
-        public Posicion(int linha, int coluna)
+        public Posicion(int row, int column)
         {
-            this.Linha = linha;
-            this.Coluna = coluna;
+            this.Row = row;
+            this.Column = column;
         }
         public override string ToString()
         {
-            return Linha + ", " + Coluna;
+            return Row + ", " + Column;
         }
     }
 }
