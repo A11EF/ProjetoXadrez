@@ -36,21 +36,22 @@ namespace tabuleiro
             Pieces[position.Row, position.Column] = piece;
             piece.Position = position;
         }
-        public ChessPiece? RemovePiece(Posicion position)
-        {
-            if (GetPiece(position) == null)
-            {
+
+        public ChessPiece RemovePiece(Posicion pos) {
+            if (GetPiece(pos) == null) {
                 return null;
             }
-            ChessPiece aux = GetPiece(position);
+            ChessPiece aux = GetPiece(pos);
             aux.Position = null;
-            Pieces[position.Row, position.Column] = null;
+            Pieces[pos.Row, pos.Column] = null;
             return aux;
         }
+
         public bool PositionExists(Posicion position)
         {
             return position.Row >= 0 && position.Row < Rows && position.Column >= 0 && position.Column < Columns;
         }
+
         public void ValidatePosition(Posicion position)
         {
             if (!PositionExists(position))

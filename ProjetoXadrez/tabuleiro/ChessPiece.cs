@@ -1,6 +1,6 @@
 namespace tabuleiro
 {
-    class ChessPiece
+    abstract class ChessPiece
     {
         public Posicion? Position { get; set; }
         public Color Color { get; protected set; }
@@ -18,5 +18,6 @@ namespace tabuleiro
         {
             MoveCount++;
         }
+        public abstract bool[,] PossibleMovements();
     }
 }

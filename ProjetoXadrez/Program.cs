@@ -17,6 +17,12 @@ namespace ProjetoXadrez
 
                     Console.Write("Origin: ");
                     Posicion origin = Screen.ReadChessPosition().ToPosition();
+                    Console.WriteLine();
+
+                    Console.Clear();
+                    bool[,] possibleMovements = game.Chessboard.GetPiece(origin).PossibleMovements();
+                    Screen.PrintChessboard(game.Chessboard, possibleMovements);
+
 
                     Console.WriteLine();
                     Console.Write("Destiny: ");
