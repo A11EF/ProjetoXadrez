@@ -39,6 +39,8 @@ namespace ProjetoXadrez
                         Console.ReadLine();
                     }
                 }
+                Console.Clear();
+                Screen.PrintGame(game);
             }
             catch (ChessboardException e)
             {

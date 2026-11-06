@@ -62,8 +62,15 @@ namespace Xadrez
             {
                 xeque = false;
             }
-            Turn++;
-            ChangePlayer();
+            if(IsCheckMate(Opponent(CurrentPlayer)))
+            {
+                Finished = true;
+            }
+            else
+            {
+                Turn++;
+                ChangePlayer();
+            }
         }
         public void ValidateOriginPosition(Posicion position)
         {
@@ -162,6 +169,37 @@ namespace Xadrez
                 }
             }
             return false;
+        }
+
+        public bool IsCheckMate(Color color)
+        {
+            if (!IsInCheck(color))
+            {
+                return false;
+            }
+            foreach (ChessPiece x in PiecesInGameByColor(color))
+            {
+                bool[,] mat = x.PossibleMovements();
+                for (int i = 0; i < Chessboard.Rows; i++)
+                {
+                    for (int j = 0; j < Chessboard.Columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Posicion origin = x.Position;
+                            Posicion destiny = new Posicion(i, j);
+                            ChessPiece capturedPiece = MovePiece(origin, destiny);
+                            bool testCheck = IsInCheck(color);
+                            UndoMove(origin, destiny, capturedPiece);
+                            if (!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
         public void PlaceNewPiece(char column, int row, ChessPiece piece)
         {
