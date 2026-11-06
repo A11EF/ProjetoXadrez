@@ -14,11 +14,9 @@ namespace ProjetoXadrez
                     try
                     {
                         Console.Clear();
-                        Screen.PrintChessboard(game.Chessboard);
-                        Console.WriteLine();
-                        Console.WriteLine("Turn: " + game.Turn);
-                        Console.WriteLine("Waiting player: " + game.CurrentPlayer);
+                        Screen.PrintGame(game);
 
+                        Console.WriteLine();
                         Console.Write("Origin: ");
                         Posicion origin = Screen.ReadChessPosition().ToPosition();
                         game.ValidateOriginPosition(origin);
@@ -33,7 +31,7 @@ namespace ProjetoXadrez
                         Posicion destiny = Screen.ReadChessPosition().ToPosition();
                         game.ValidateDestinyPosition(origin, destiny);
 
-                        game.MovePiece(origin, destiny);
+                        game.MakePlay(origin, destiny);
                     }
                     catch (ChessboardException e)
                     {
@@ -46,10 +44,6 @@ namespace ProjetoXadrez
             {
                 Console.WriteLine(e.Message);
             }
-
-            // ChessPosition pos = new ChessPosition('c', 7);
-            // Console.WriteLine(pos);
-            // Console.WriteLine(pos.ToPosition());
         }
     }
 }

@@ -4,6 +4,37 @@ namespace ProjetoXadrez
 {
     class Screen
     {
+        public static void PrintGame(ChessGame game)
+        {
+            PrintChessboard(game.Chessboard);
+            Console.WriteLine();
+            PrintCapturedPieces(game);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + game.Turn);
+            Console.WriteLine("Waiting player: " + game.CurrentPlayer);
+        }
+        public static void PrintCapturedPieces(ChessGame game)
+        {
+            Console.WriteLine("Captured pieces: ");
+            Console.Write("White: ");
+            PrintSet(game.CapturedPieces.Where(x => x.Color == Color.White).ToHashSet());
+            Console.WriteLine();
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Black: ");
+            PrintSet(game.CapturedPieces.Where(x => x.Color == Color.Black).ToHashSet());
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+        public static void PrintSet(HashSet<ChessPiece> set)
+        {
+            Console.Write("[");
+            foreach (ChessPiece x in set)
+            {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
+        }
         public static void PrintChessboard(Chessboard chessboard)
         {
             for (int i=0; i<chessboard.Rows; i++) {
