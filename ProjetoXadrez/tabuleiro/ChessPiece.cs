@@ -18,6 +18,25 @@ namespace tabuleiro
         {
             MoveCount++;
         }
+        public bool HasPossibleMovements()
+        {
+            bool[,] mat = PossibleMovements();
+            for (int i = 0; i < Chessboard.Rows; i++)
+            {
+                for (int j = 0; j < Chessboard.Columns; j++)
+                {
+                    if (mat[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public bool PossibleMovement(Posicion position)
+        {
+            return PossibleMovements()[position.Row, position.Column];
+        }
         public abstract bool[,] PossibleMovements();
     }
 }

@@ -4,8 +4,8 @@ namespace Xadrez
     class ChessGame
     {
         public Chessboard Chessboard { get; private set; }
-        private int Turn;
-        private Color CurrentPlayer;
+        public int Turn { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
 
         public ChessGame()
@@ -22,6 +22,46 @@ namespace Xadrez
             piece.IncreaseMoveCount();
             ChessPiece capturedPiece = Chessboard.RemovePiece(destiny);
             Chessboard.PlacePiece(piece, destiny);
+        }
+        public void MakePlay(Posicion origin, Posicion destiny)
+        {
+            MovePiece(origin, destiny);
+            Turn++;
+            ChangePlayer();
+        }
+        public void ValidateOriginPosition(Posicion position)
+        {
+            if (Chessboard.GetPiece(position) == null)
+            {
+                throw new ChessboardException("Não existe peça na posição de origem escolhida!");
+            }
+            if (CurrentPlayer != Chessboard.GetPiece(position).Color)
+            {
+                throw new ChessboardException("A peça de origem escolhida não é sua!");
+            }
+            if (!Chessboard.GetPiece(position).HasPossibleMovements())
+            {
+                throw new ChessboardException("Não há movimentos possíveis para a peça de origem escolhida!");
+            }
+        }
+
+        public void ValidateDestinyPosition(Posicion origin, Posicion destiny)
+        {
+            if (!Chessboard.GetPiece(origin).PossibleMovement(destiny))
+            {
+                throw new ChessboardException("Posição de destino inválida!");
+            }
+        }
+        private void ChangePlayer()
+        {
+            if (CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
         }
         private void PlacePieces()
         {

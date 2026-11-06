@@ -11,26 +11,36 @@ namespace ProjetoXadrez
                 ChessGame game = new ChessGame();
                 while (!game.Finished)
                 {
-                    Console.Clear();
-                    Screen.PrintChessboard(game.Chessboard);
-                    Console.WriteLine();
+                    try
+                    {
+                        Console.Clear();
+                        Screen.PrintChessboard(game.Chessboard);
+                        Console.WriteLine();
+                        Console.WriteLine("Turn: " + game.Turn);
+                        Console.WriteLine("Waiting player: " + game.CurrentPlayer);
 
-                    Console.Write("Origin: ");
-                    Posicion origin = Screen.ReadChessPosition().ToPosition();
-                    Console.WriteLine();
+                        Console.Write("Origin: ");
+                        Posicion origin = Screen.ReadChessPosition().ToPosition();
+                        game.ValidateOriginPosition(origin);
 
-                    Console.Clear();
-                    bool[,] possibleMovements = game.Chessboard.GetPiece(origin).PossibleMovements();
-                    Screen.PrintChessboard(game.Chessboard, possibleMovements);
+                        bool[,] possibleMovements = game.Chessboard.GetPiece(origin).PossibleMovements();
+                        Console.Clear();
+                        Screen.PrintChessboard(game.Chessboard, possibleMovements);
 
 
-                    Console.WriteLine();
-                    Console.Write("Destiny: ");
-                    Posicion destiny = Screen.ReadChessPosition().ToPosition();
+                        Console.WriteLine();
+                        Console.Write("Destiny: ");
+                        Posicion destiny = Screen.ReadChessPosition().ToPosition();
+                        game.ValidateDestinyPosition(origin, destiny);
 
-                    game.MovePiece(origin, destiny);
+                        game.MovePiece(origin, destiny);
+                    }
+                    catch (ChessboardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
-                   
             }
             catch (ChessboardException e)
             {
