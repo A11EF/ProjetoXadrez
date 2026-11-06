@@ -18,6 +18,10 @@ namespace tabuleiro
         {
             MoveCount++;
         }
+        public void DecreaseMoveCount()
+        {
+            MoveCount--;
+        }
         public bool HasPossibleMovements()
         {
             bool[,] mat = PossibleMovements();

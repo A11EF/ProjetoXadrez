@@ -12,6 +12,10 @@ namespace ProjetoXadrez
             Console.WriteLine();
             Console.WriteLine("Turn: " + game.Turn);
             Console.WriteLine("Waiting player: " + game.CurrentPlayer);
+            if (game.xeque)
+            {
+                Console.WriteLine("XEQUE!");
+            }
         }
         public static void PrintCapturedPieces(ChessGame game)
         {
