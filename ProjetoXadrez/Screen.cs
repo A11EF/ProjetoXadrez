@@ -14,7 +14,7 @@ namespace ProjetoXadrez
             if (!game.Finished)
             {
                 Console.WriteLine("Waiting player: " + game.CurrentPlayer);
-                if (game.xeque)
+                if (game.Xeque)
                 {
                     Console.WriteLine("CHECK!");
                 }

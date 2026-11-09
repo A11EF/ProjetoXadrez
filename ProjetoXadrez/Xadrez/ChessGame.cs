@@ -9,8 +9,8 @@ namespace Xadrez
         public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
         private HashSet<ChessPiece> Pieces;
-        public HashSet<ChessPiece> CapturedPieces{ get; private set; }
-        public bool xeque { get; private set; }
+        public HashSet<ChessPiece> CapturedPieces { get; private set; }
+        public bool Xeque { get; private set; }
 
         public ChessGame()
         {
@@ -20,7 +20,7 @@ namespace Xadrez
             this.Finished = false;
             this.Pieces = new HashSet<ChessPiece>();
             this.CapturedPieces = new HashSet<ChessPiece>();
-            this.xeque = false;
+            this.Xeque = false;
             PlacePieces();
         }
         public ChessPiece MovePiece(Posicion origin, Posicion destiny)
@@ -29,9 +29,27 @@ namespace Xadrez
             piece.IncreaseMoveCount();
             ChessPiece capturedPiece = Chessboard.RemovePiece(destiny);
             Chessboard.PlacePiece(piece, destiny);
-            if(capturedPiece != null)
+            if (capturedPiece != null)
             {
                 CapturedPieces.Add(capturedPiece);
+            }
+            //#jogadaespecial roque pequeno
+            if (piece is King && destiny.Column == origin.Column + 2)
+            {
+                Posicion originR = new Posicion(origin.Row, origin.Column + 3);
+                Posicion destinyR = new Posicion(origin.Row, origin.Column + 1);
+                ChessPiece R = Chessboard.RemovePiece(originR);
+                R.IncreaseMoveCount();
+                Chessboard.PlacePiece(R, destinyR);
+            }
+            //#jogadaespecial roque grande
+            if (piece is King && destiny.Column == origin.Column - 2)
+            {
+                Posicion originR = new Posicion(origin.Row, origin.Column - 4);
+                Posicion destinyR = new Posicion(origin.Row, origin.Column - 1);
+                ChessPiece R = Chessboard.RemovePiece(originR);
+                R.IncreaseMoveCount();
+                Chessboard.PlacePiece(R, destinyR);
             }
             return capturedPiece;
         }
@@ -39,30 +57,49 @@ namespace Xadrez
         {
             ChessPiece piece = Chessboard.RemovePiece(destiny);
             piece.DecreaseMoveCount();
-            if(capturedPiece != null)
+            if (capturedPiece != null)
             {
                 Chessboard.PlacePiece(capturedPiece, destiny);
                 CapturedPieces.Remove(capturedPiece);
             }
             Chessboard.PlacePiece(piece, origin);
+
+            //#jogadaespecial roque pequeno
+            if (piece is King && destiny.Column == origin.Column + 2)
+            {
+                Posicion originR = new Posicion(origin.Row, origin.Column + 3);
+                Posicion destinyR = new Posicion(origin.Row, origin.Column + 1);
+                ChessPiece R = Chessboard.RemovePiece(destinyR);
+                R.DecreaseMoveCount();
+                Chessboard.PlacePiece(R, originR);
+            }
+            //#jogadaespecial roque grande
+            if (piece is King && destiny.Column == origin.Column - 2)
+            {
+                Posicion originR = new Posicion(origin.Row, origin.Column - 4);
+                Posicion destinyR = new Posicion(origin.Row, origin.Column - 1);
+                ChessPiece R = Chessboard.RemovePiece(destinyR);
+                R.DecreaseMoveCount();
+                Chessboard.PlacePiece(R, originR);
+            }
         }
         public void MakePlay(Posicion origin, Posicion destiny)
         {
             ChessPiece capturedPiece = MovePiece(origin, destiny);
-            if(IsInCheck(CurrentPlayer))
+            if (IsInCheck(CurrentPlayer))
             {
                 UndoMove(origin, destiny, capturedPiece);
                 throw new ChessboardException("Você não pode se colocar em xeque!");
             }
-            if(IsInCheck(Opponent(CurrentPlayer)))
+            if (IsInCheck(Opponent(CurrentPlayer)))
             {
-                xeque = true;
+                Xeque = true;
             }
             else
             {
-                xeque = false;
+                Xeque = false;
             }
-            if(IsCheckMate(Opponent(CurrentPlayer)))
+            if (IsCheckMate(Opponent(CurrentPlayer)))
             {
                 Finished = true;
             }
@@ -208,26 +245,26 @@ namespace Xadrez
         }
         private void PlacePieces()
         {
-            PlaceNewPiece( 'a', 1, new Rook(Chessboard, Color.White));
-            PlaceNewPiece( 'b', 1, new Knight(Chessboard, Color.White));
-            PlaceNewPiece( 'c', 1, new Bishop(Chessboard, Color.White));
-            PlaceNewPiece( 'd', 1, new Queen(Chessboard, Color.White));
-            PlaceNewPiece( 'e', 1, new King(Chessboard, Color.White));
-            PlaceNewPiece( 'f', 1, new Bishop(Chessboard, Color.White));
-            PlaceNewPiece( 'g', 1, new Knight(Chessboard, Color.White));
-            PlaceNewPiece( 'h', 1, new Rook(Chessboard, Color.White));
+            PlaceNewPiece('a', 1, new Rook(Chessboard, Color.White));
+            PlaceNewPiece('b', 1, new Knight(Chessboard, Color.White));
+            PlaceNewPiece('c', 1, new Bishop(Chessboard, Color.White));
+            PlaceNewPiece('d', 1, new Queen(Chessboard, Color.White));
+            PlaceNewPiece('e', 1, new King(Chessboard, Color.White, this));
+            PlaceNewPiece('f', 1, new Bishop(Chessboard, Color.White));
+            PlaceNewPiece('g', 1, new Knight(Chessboard, Color.White));
+            PlaceNewPiece('h', 1, new Rook(Chessboard, Color.White));
             for (int i = 0; i < Chessboard.Columns; i++)
             {
                 PlaceNewPiece((char)('a' + i), 2, new Pawn(Chessboard, Color.White));
             }
-            PlaceNewPiece( 'a', 8, new Rook(Chessboard, Color.Black));
-            PlaceNewPiece( 'b', 8, new Knight(Chessboard, Color.Black));
-            PlaceNewPiece( 'c', 8, new Bishop(Chessboard, Color.Black));
-            PlaceNewPiece( 'd', 8, new Queen(Chessboard, Color.Black));
-            PlaceNewPiece( 'e', 8, new King(Chessboard, Color.Black));
-            PlaceNewPiece( 'f', 8, new Bishop(Chessboard, Color.Black));
-            PlaceNewPiece( 'g', 8, new Knight(Chessboard, Color.Black));
-            PlaceNewPiece( 'h', 8, new Rook(Chessboard, Color.Black));
+            PlaceNewPiece('a', 8, new Rook(Chessboard, Color.Black));
+            PlaceNewPiece('b', 8, new Knight(Chessboard, Color.Black));
+            PlaceNewPiece('c', 8, new Bishop(Chessboard, Color.Black));
+            PlaceNewPiece('d', 8, new Queen(Chessboard, Color.Black));
+            PlaceNewPiece('e', 8, new King(Chessboard, Color.Black, this));
+            PlaceNewPiece('f', 8, new Bishop(Chessboard, Color.Black));
+            PlaceNewPiece('g', 8, new Knight(Chessboard, Color.Black));
+            PlaceNewPiece('h', 8, new Rook(Chessboard, Color.Black));
             for (int i = 0; i < Chessboard.Columns; i++)
             {
                 PlaceNewPiece((char)('a' + i), 7, new Pawn(Chessboard, Color.Black));

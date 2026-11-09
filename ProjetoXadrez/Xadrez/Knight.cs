@@ -12,7 +12,7 @@ namespace Xadrez
 
         public override string ToString()
         {
-            return "K";
+            return "N";
         }
 
         private bool CanMove(Posicion position)

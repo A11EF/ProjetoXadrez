@@ -3,8 +3,10 @@ namespace Xadrez
 {
     class King : ChessPiece
     {
-        public King(Chessboard chessboard, Color color) : base(chessboard, color)
+        private ChessGame game;
+        public King(Chessboard chessboard, Color color, ChessGame game) : base(chessboard, color)
         {
+            this.game = game;
         }
         public override string ToString()
         {
@@ -16,7 +18,12 @@ namespace Xadrez
             ChessPiece? p = Chessboard.GetPiece(position);
             return p == null || p.Color != Color;
         }
-         public override bool[,] PossibleMovements()
+        private bool TestRookCastling(Posicion position)
+        {
+            ChessPiece? p = Chessboard.GetPiece(position);
+            return p != null && p is Rook && p.Color == Color && p.MoveCount == 0;
+        }
+        public override bool[,] PossibleMovements()
         {
             bool[,] mat = new bool[Chessboard.Rows, Chessboard.Columns];
             Posicion pos = new Posicion(0, 0);
@@ -67,6 +74,34 @@ namespace Xadrez
             if (Chessboard.PositionExists(pos) && CanMove(pos))
             {
                 mat[pos.Row, pos.Column] = true;
+            }
+
+            // #jogadaespecial roque
+            if (MoveCount == 0 && !game.Xeque)
+            {
+                // #jogadaespecial roque pequeno
+                Posicion posT1 = new Posicion(Position.Row, Position.Column + 3);
+                if (TestRookCastling(posT1))
+                {
+                    Posicion p1 = new Posicion(Position.Row, Position.Column + 1);
+                    Posicion p2 = new Posicion(Position.Row, Position.Column + 2);
+                    if (Chessboard.GetPiece(p1) == null && Chessboard.GetPiece(p2) == null)
+                    {
+                        mat[Position.Row, Position.Column + 2] = true;
+                    }
+                }
+                // #jogadaespecial roque grande
+                Posicion posT2 = new Posicion(Position.Row, Position.Column - 4);
+                if (TestRookCastling(posT2))
+                {
+                    Posicion p1 = new Posicion(Position.Row, Position.Column - 1);
+                    Posicion p2 = new Posicion(Position.Row, Position.Column - 2);
+                    Posicion p3 = new Posicion(Position.Row, Position.Column - 3);
+                    if (Chessboard.GetPiece(p1) == null && Chessboard.GetPiece(p2) == null && Chessboard.GetPiece(p3) == null)
+                    {
+                        mat[Position.Row, Position.Column - 2] = true;
+                    }
+                }
             }
             return mat;
         }
