@@ -208,12 +208,30 @@ namespace Xadrez
         }
         private void PlacePieces()
         {
-            PlaceNewPiece('c', 1, new Rook(Chessboard, Color.White));
-            PlaceNewPiece('h', 6, new Rook(Chessboard, Color.White));
-            PlaceNewPiece('d', 1, new King(Chessboard, Color.White));
-            PlaceNewPiece('e', 2, new Rook(Chessboard, Color.Black));
-            PlaceNewPiece('f', 5, new Rook(Chessboard, Color.Black));
-            PlaceNewPiece('d', 8, new King(Chessboard, Color.Black));
+            PlaceNewPiece( 'a', 1, new Rook(Chessboard, Color.White));
+            PlaceNewPiece( 'b', 1, new Knight(Chessboard, Color.White));
+            PlaceNewPiece( 'c', 1, new Bishop(Chessboard, Color.White));
+            PlaceNewPiece( 'd', 1, new Queen(Chessboard, Color.White));
+            PlaceNewPiece( 'e', 1, new King(Chessboard, Color.White));
+            PlaceNewPiece( 'f', 1, new Bishop(Chessboard, Color.White));
+            PlaceNewPiece( 'g', 1, new Knight(Chessboard, Color.White));
+            PlaceNewPiece( 'h', 1, new Rook(Chessboard, Color.White));
+            for (int i = 0; i < Chessboard.Columns; i++)
+            {
+                PlaceNewPiece((char)('a' + i), 2, new Pawn(Chessboard, Color.White));
+            }
+            PlaceNewPiece( 'a', 8, new Rook(Chessboard, Color.Black));
+            PlaceNewPiece( 'b', 8, new Knight(Chessboard, Color.Black));
+            PlaceNewPiece( 'c', 8, new Bishop(Chessboard, Color.Black));
+            PlaceNewPiece( 'd', 8, new Queen(Chessboard, Color.Black));
+            PlaceNewPiece( 'e', 8, new King(Chessboard, Color.Black));
+            PlaceNewPiece( 'f', 8, new Bishop(Chessboard, Color.Black));
+            PlaceNewPiece( 'g', 8, new Knight(Chessboard, Color.Black));
+            PlaceNewPiece( 'h', 8, new Rook(Chessboard, Color.Black));
+            for (int i = 0; i < Chessboard.Columns; i++)
+            {
+                PlaceNewPiece((char)('a' + i), 7, new Pawn(Chessboard, Color.Black));
+            }
         }
     }
 }
