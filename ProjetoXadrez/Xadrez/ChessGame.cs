@@ -129,6 +129,19 @@ namespace Xadrez
                 UndoMove(origin, destiny, capturedPiece);
                 throw new ChessboardException("Você não pode se colocar em xeque!");
             }
+            // #jogadaespecial promoção
+            ChessPiece piece = Chessboard.GetPiece(destiny);
+            if (piece is Pawn)
+            {
+                if ((piece.Color == Color.White && destiny.Row == 0) || (piece.Color == Color.Black && destiny.Row == 7))
+                {
+                    piece = Chessboard.RemovePiece(destiny);
+                    Pieces.Remove(piece);
+                    ChessPiece queen = new Queen(Chessboard, piece.Color);
+                    Chessboard.PlacePiece(queen, destiny);
+                    Pieces.Add(queen);
+                }
+            }
             if (IsInCheck(Opponent(CurrentPlayer)))
             {
                 Xeque = true;
@@ -146,9 +159,6 @@ namespace Xadrez
                 Turn++;
                 ChangePlayer();
             }
-
-
-            ChessPiece piece = Chessboard.GetPiece(destiny);
             //#jogadaespecial en passant
             if (piece is Pawn && (destiny.Row == origin.Row - 2 || destiny.Row == origin.Row + 2))
             {
