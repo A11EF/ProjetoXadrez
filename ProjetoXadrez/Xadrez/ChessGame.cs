@@ -11,6 +11,7 @@ namespace Xadrez
         private HashSet<ChessPiece> Pieces;
         public HashSet<ChessPiece> CapturedPieces { get; private set; }
         public bool Xeque { get; private set; }
+        public ChessPiece? VulnerableEnPassant { get; set; }
 
         public ChessGame()
         {
@@ -21,6 +22,7 @@ namespace Xadrez
             this.Pieces = new HashSet<ChessPiece>();
             this.CapturedPieces = new HashSet<ChessPiece>();
             this.Xeque = false;
+            this.VulnerableEnPassant = null;
             PlacePieces();
         }
         public ChessPiece MovePiece(Posicion origin, Posicion destiny)
@@ -50,6 +52,24 @@ namespace Xadrez
                 ChessPiece R = Chessboard.RemovePiece(originR);
                 R.IncreaseMoveCount();
                 Chessboard.PlacePiece(R, destinyR);
+            }
+            //#jogadaespecial en passant
+            if (piece is Pawn)
+            {
+                if (origin.Column != destiny.Column && capturedPiece == null)
+                {
+                    Posicion pawnPosition;
+                    if (piece.Color == Color.White)
+                    {
+                        pawnPosition = new Posicion(destiny.Row + 1, destiny.Column);
+                    }
+                    else
+                    {
+                        pawnPosition = new Posicion(destiny.Row - 1, destiny.Column);
+                    }
+                    capturedPiece = Chessboard.RemovePiece(pawnPosition);
+                    CapturedPieces.Add(capturedPiece);
+                }
             }
             return capturedPiece;
         }
@@ -82,6 +102,24 @@ namespace Xadrez
                 R.DecreaseMoveCount();
                 Chessboard.PlacePiece(R, originR);
             }
+            //#jogadaespecial en passant
+            if (piece is Pawn)
+            {
+                if (origin.Column != destiny.Column && capturedPiece == VulnerableEnPassant)
+                {
+                    ChessPiece pawn = Chessboard.RemovePiece(destiny);
+                    Posicion pawnPosition;
+                    if (piece.Color == Color.White)
+                    {
+                        pawnPosition = new Posicion(3, destiny.Column);
+                    }
+                    else
+                    {
+                        pawnPosition = new Posicion(4, destiny.Column);
+                    }
+                    Chessboard.PlacePiece(pawn, pawnPosition);
+                }
+            }
         }
         public void MakePlay(Posicion origin, Posicion destiny)
         {
@@ -107,6 +145,18 @@ namespace Xadrez
             {
                 Turn++;
                 ChangePlayer();
+            }
+
+
+            ChessPiece piece = Chessboard.GetPiece(destiny);
+            //#jogadaespecial en passant
+            if (piece is Pawn && (destiny.Row == origin.Row - 2 || destiny.Row == origin.Row + 2))
+            {
+                VulnerableEnPassant = piece;
+            }
+            else
+            {
+                VulnerableEnPassant = null;
             }
         }
         public void ValidateOriginPosition(Posicion position)
@@ -255,7 +305,7 @@ namespace Xadrez
             PlaceNewPiece('h', 1, new Rook(Chessboard, Color.White));
             for (int i = 0; i < Chessboard.Columns; i++)
             {
-                PlaceNewPiece((char)('a' + i), 2, new Pawn(Chessboard, Color.White));
+                PlaceNewPiece((char)('a' + i), 2, new Pawn(Chessboard, Color.White,this));
             }
             PlaceNewPiece('a', 8, new Rook(Chessboard, Color.Black));
             PlaceNewPiece('b', 8, new Knight(Chessboard, Color.Black));
@@ -267,7 +317,7 @@ namespace Xadrez
             PlaceNewPiece('h', 8, new Rook(Chessboard, Color.Black));
             for (int i = 0; i < Chessboard.Columns; i++)
             {
-                PlaceNewPiece((char)('a' + i), 7, new Pawn(Chessboard, Color.Black));
+                PlaceNewPiece((char)('a' + i), 7, new Pawn(Chessboard, Color.Black,this));
             }
         }
     }
