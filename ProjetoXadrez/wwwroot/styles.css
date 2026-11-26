@@ -1,0 +1,241 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, "Segoe UI", sans-serif;
+  background: #17211b;
+  color: #f3f4ed;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 0, #26382c 0, #17211b 55%);
+}
+
+button {
+  font: inherit;
+}
+
+.app {
+  width: min(100% - 32px, 1040px);
+  margin: 0 auto;
+  padding: 28px 0 36px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #a4b8a7;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+
+h1 {
+  margin: 5px 0 0;
+  font-size: 30px;
+  letter-spacing: -.04em;
+}
+
+.new-game {
+  border: 1px solid #536a59;
+  border-radius: 12px;
+  padding: 11px 16px;
+  background: #304336;
+  color: #f3f4ed;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.new-game:active {
+  transform: scale(.98);
+}
+
+.game {
+  display: grid;
+  grid-template-columns: minmax(0, 680px) minmax(190px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.board-wrap {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #3b4b3e;
+  border-radius: 12px;
+  background: #111a14;
+  box-shadow: 0 20px 50px #0005;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 5px;
+  touch-action: manipulation;
+}
+
+.square {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  font-family: "Segoe UI Symbol", "Noto Sans Symbols 2", "DejaVu Sans", sans-serif;
+  font-size: clamp(24px, 8vw, 62px);
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.square.light {
+  background: #e8e4d2;
+}
+
+.square.dark {
+  background: #72916d;
+}
+
+.square.selected {
+  background: #e5ca60;
+}
+
+.square.possible {
+  background: #80bca2;
+}
+
+.square:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid #fff;
+  outline-offset: -4px;
+}
+
+.piece-white {
+  color: #fffdf5;
+  text-shadow: 0 2px 3px #28322b, 0 0 2px #28322b;
+}
+
+.piece-black {
+  color: #20271f;
+  text-shadow: 0 1px 1px #fff8;
+}
+
+.details {
+  display: grid;
+  gap: 14px;
+}
+
+.turn-card,
+.captured-card {
+  padding: 18px;
+  border: 1px solid #35453a;
+  border-radius: 14px;
+  background: #202d24;
+}
+
+.turn-card h2 {
+  margin: 8px 0 4px;
+  font-size: 24px;
+}
+
+.turn-card p,
+.captured-card p {
+  margin: 0;
+  color: #c3d0c3;
+}
+
+.turn-card p {
+  min-height: 22px;
+}
+
+.captured-card h3 {
+  margin: 0 0 10px;
+  color: #a4b8a7;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.captured-card p {
+  font-family: "Segoe UI Symbol", sans-serif;
+  font-size: 25px;
+  overflow-wrap: anywhere;
+}
+
+.hint {
+  margin: 0;
+  padding: 4px 2px;
+  color: #a4b8a7;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .app {
+    width: min(100% - 20px, 520px);
+    padding: max(14px, env(safe-area-inset-top)) 0 max(20px, env(safe-area-inset-bottom));
+  }
+
+  .topbar {
+    margin-bottom: 14px;
+  }
+
+  .game {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .board-wrap {
+    padding: 5px;
+    border-radius: 9px;
+  }
+
+  .details {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .turn-card,
+  .captured-card {
+    padding: 13px;
+  }
+
+  .turn-card h2 {
+    font-size: 20px;
+  }
+
+  .captured-card p {
+    font-size: 21px;
+  }
+
+  .hint {
+    grid-column: 1 / -1;
+    padding: 0 2px;
+  }
+}
+
+@media (max-width: 360px) {
+  .app {
+    width: min(100% - 12px, 520px);
+  }
+
+  .board-wrap {
+    padding: 3px;
+  }
+}

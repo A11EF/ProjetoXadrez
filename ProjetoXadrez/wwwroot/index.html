@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17211b">
+  <title>Xadrez</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">PARTIDA LOCAL</p>
+        <h1>Xadrez</h1>
+      </div>
+      <button id="new-game" class="new-game" type="button">Novo jogo</button>
+    </header>
+
+    <section class="game">
+      <div class="board-wrap">
+        <div id="board" class="board" role="grid" aria-label="Tabuleiro de xadrez"></div>
+      </div>
+
+      <aside class="details">
+        <div class="turn-card">
+          <span id="turn-label" class="eyebrow">JOGADA 1</span>
+          <h2 id="player">Brancas</h2>
+          <p id="status" role="status">Em jogo</p>
+        </div>
+        <div class="captured-card">
+          <h3>Peças capturadas</h3>
+          <p id="captured" aria-live="polite">Nenhuma</p>
+        </div>
+        <p class="hint">Toque em uma peça e depois na casa de destino.</p>
+      </aside>
+    </section>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>
